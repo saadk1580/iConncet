@@ -1,10 +1,7 @@
 .chat-main-container {
   /* width: 100vw;
   height: 100vh; */
-  background-color: #181a1b;
-  color: #ccd3d5;
-  display: flex;
-  font-family: "Poppins", sans-serif;
+
   /* justify-content: space-between; */
 }
 

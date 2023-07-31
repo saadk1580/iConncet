@@ -5,14 +5,17 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@firebase/app-types": "^0.9.0",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
+    "@types/bad-words": "^3.0.1",
+    "@types/firebase": "^3.2.1",
     "bad-words": "^3.0.4",
     "dotenv": "^16.0.1",
-    "firebase": "^8.10.1",
+    "firebase": "^10.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-input-emoji": "^4.1.0",
@@ -20,8 +23,10 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "typescript": "^5.1.6",
+    "uuid": "^9.0.0",
     "uuidv4": "^6.2.13",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yarn": "^1.22.19"
   },
   "scripts": {
     "start": "react-scripts start",

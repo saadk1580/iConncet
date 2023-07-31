@@ -1,0 +1,49 @@
+import "./App.css";
+import "../Auth/Auth";
+import Chat from "../Chat/Chat";
+import { ChatInput } from "../ChatInput/ChatInput";
+import { SearchUsers } from "../SearchUsers/SearchUsers";
+import styled from "@emotion/styled";
+import { User} from "firebase/auth";
+import { createContext} from "react";
+import { DocumentData } from "firebase/firestore";
+import { ProfileInfo } from "../ProfileInfo/ProfileInfo";
+import { useStateObserver } from "../../hooks/useStateOberser";
+import { ChatList } from "../ChatList/ChatList";
+
+const Container = styled.div({
+  display: "flex",
+});
+
+export type Data = {
+  users: DocumentData[];
+  chats: DocumentData[];
+};
+
+export const UserContext = createContext<User | null>(null);
+
+function App() {
+  const user = useStateObserver();
+
+  if (user === undefined || user === null) return <h1>Loading</h1>;
+
+
+  return (
+    <UserContext.Provider value={user}>
+      <Container>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <ProfileInfo />
+        <ChatList />
+        </div>
+        <div>
+          <Chat/>
+          <ChatInput />
+        </div>
+        <SearchUsers />
+
+      </Container>
+    </UserContext.Provider>
+  );
+}
+
+export default App;
