@@ -15,8 +15,8 @@ export const fetchUsersList = async () => {
 };
 
 //Gets all the chats for the curent user
-export const fetchChatsList = async (user: User | null) => {
-  const docRef = doc(db, "users", user?.uid ?? "");
+export const fetchChatsList = async (userId: string) => {
+  const docRef = doc(db, "users", userId);
 
   const userChats = (await getDoc(docRef)).data()?.chatIds;
 
@@ -24,14 +24,12 @@ export const fetchChatsList = async (user: User | null) => {
 };
 
 //Gett all the chat requests
-export const fetchChatRequests = async (uid?: string) => {
-  if (uid) {
-    const docRef = doc(db, "users", uid);
+export const fetchChatRequests = async (userId: string) => {
+    const docRef = doc(db, "users", userId);
     const docSnap = await getDoc(docRef);
 
     const data = docSnap.data();
     return data?.chatRequestsRecieved;
-  }
 };
 
 export const getUserDetails = async (userId?: string) => {
@@ -91,12 +89,12 @@ export const acceptChatRequest = async (requester: DocumentData, senderUserId?: 
   await addDoc(collection(db, `chats/${newChatUUID}/messages`), {});
 };
 
-export const getChatData = async (chatUid: string) => {
-  sessionStorage.setItem("chatId", chatUid);
+export const getChatData = async (chatId: string) => {
+  sessionStorage.setItem("chatId", chatId);
 
-  const docRef = await getDoc(doc(db, "chats", chatUid));
+  const docRef = await getDoc(doc(db, "chats", chatId));
 
-  const messagesdocRef = collection(db, `chats/${chatUid}/messages`);
+  const messagesdocRef = collection(db, `chats/${chatId}/messages`);
   const messagesDocSnap = await getDocs(messagesdocRef);
 
   const messages = messagesDocSnap.docs.map((doc) => doc.data());
@@ -106,7 +104,7 @@ export const getChatData = async (chatUid: string) => {
   return { messages, participants };
 };
 
-export const sendMessage = async (message: string, uid?: string) => {
+export const sendMessage = async (message: string, uid: string) => {
   const chatUid = sessionStorage.getItem("chatId");
 
   chatUid &&

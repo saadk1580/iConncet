@@ -20,14 +20,13 @@ export type Data = {
   chats: DocumentData[];
 };
 
-export const UserContext = createContext<User | null>(null);
+export const UserContext = createContext<DocumentData>({});
 
 function App() {
   const user = useStateObserver();
 
-  if (user === undefined || user === null) return <h1>Loading</h1>;
-
-
+  if (user === undefined) return <h1>Loading</h1>;
+   
   return (
     <UserContext.Provider value={user}>
       <Container>
