@@ -26,7 +26,6 @@ export default function Login() {
     const addUser = async () => {
       if (uid) {
         const docRef = doc(db, "users", uid);
-        console.log('called')
         await setDoc(docRef, {
           uid,
           displayName,

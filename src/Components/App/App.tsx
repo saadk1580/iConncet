@@ -4,12 +4,12 @@ import Chat from "../Chat/Chat";
 import { ChatInput } from "../ChatInput/ChatInput";
 import { SearchUsers } from "../SearchUsers/SearchUsers";
 import styled from "@emotion/styled";
-import { User} from "firebase/auth";
 import { createContext} from "react";
 import { DocumentData } from "firebase/firestore";
 import { ProfileInfo } from "../ProfileInfo/ProfileInfo";
 import { useStateObserver } from "../../hooks/useStateOberser";
 import { ChatList } from "../ChatList/ChatList";
+import { ChatHeader } from "../ChatHeader/ChatHeader";
 
 const Container = styled.div({
   display: "flex",
@@ -35,11 +35,11 @@ function App() {
         <ChatList />
         </div>
         <div>
+        <ChatHeader />
           <Chat/>
           <ChatInput />
         </div>
         <SearchUsers />
-
       </Container>
     </UserContext.Provider>
   );

@@ -17,7 +17,6 @@ export const useStateObserver = () => {
             setUserDetails(data)
         }
         getData()
-        console.log('called')
     }, [user])
 
     return userDetails

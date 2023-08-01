@@ -1,25 +1,27 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App/App";
-import { fetchChatsList, getChatData } from "../../utils/requests";
-import { DocumentData } from "firebase/firestore";
+import { getChatData } from "../../utils/requests";
+import { DocumentData, doc, onSnapshot } from "firebase/firestore";
 import styled from "@emotion/styled";
+import { db } from "../Auth/Auth";
 
 const Container = styled.div({
   maxWidth: '300px',
 })
 
 export const ChatList = () => {
-  const [chats, setChats] = useState<string[]>();
+  const [chats, setChats] = useState<DocumentData>();
 
   const user = useContext(UserContext);
 
-  useEffect(() => {
-    const getChats = async () => {
-      const data = await fetchChatsList(user.uid);
-      setChats(data)
-    }
+  const { uid } = user;
 
-    getChats()
+  useEffect(() => {
+    const docRef = doc(db, "users", uid);
+    onSnapshot(docRef, (snapshot) => {
+      const data = snapshot.data()?.chatIds
+      setChats(data);
+    });
   }, [])
 
   return (
@@ -30,7 +32,7 @@ export const ChatList = () => {
           CHATS
         </h1>
         <ul>
-          { chats && chats.map((chat) => (
+          { chats && chats.map((chat: string) => (
             <li onClick={() => getChatData(chat)}>{JSON.stringify(chat)}</li>
           ))}
         </ul>

@@ -1,26 +1,24 @@
-import { fetchChatRequests, fetchUsersList, sendChatRequest, acceptChatRequest} from "../../utils/requests";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { fetchUsersList, sendChatRequest} from "../../utils/requests";
+import { useContext, useEffect, useState } from "react";
 import { DocumentData } from "firebase/firestore";
 import { UserContext } from "../App/App";
+import { ChatRequests } from "../ChatRequests/ChatRequests";
 
 
 export const SearchUsers = () => {
   const [users, setUsers] = useState<DocumentData[]>([]);
-  const [requests, setRequests] = useState<DocumentData[]>()
 
   const currentUser = useContext(UserContext);
 
-  const { uid } =  currentUser ?? {}
 
   useEffect(() => {
     const getData = async () => {
       const usersList = await fetchUsersList();
-      const reqsList = await fetchChatRequests(uid)
       setUsers(usersList);
-      setRequests(reqsList)
     };
     getData();
   }, []);
+
 
 
   return (
@@ -30,22 +28,11 @@ export const SearchUsers = () => {
         {users.map((user) => (
           <>
           <li>{user.uid}</li>
-          <button onClick={async () => await sendChatRequest(user, uid)}>Add</button>
+          <button onClick={async () => await sendChatRequest(user, currentUser)}>Add</button>
           </>
         ))}
       </ul>
-      <h1>Chat Requests</h1>
-      <ul>
-        {
-          requests && Object.values(requests).map((receiver) => {
-            return <li>
-              <img src={receiver.photoURL} width={20}/>
-              {receiver.displayName}
-              <button onClick={() => acceptChatRequest(receiver, uid)}>Accept</button>
-            </li>
-          })
-        }
-      </ul>
+      <ChatRequests />
     </div>
   );
 };

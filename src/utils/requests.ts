@@ -1,37 +1,19 @@
 import { User } from "firebase/auth";
 import { db } from "../components/Auth/Auth";
-import { DocumentData, addDoc, arrayRemove, arrayUnion, collection} from "firebase/firestore";
+import { DocumentData, addDoc, arrayRemove, arrayUnion, collection, deleteField } from "firebase/firestore";
 import { doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
 const users = collection(db, "users");
-const chats = collection(db, "chats");
 
-//Gets all the users
+//**********************************//
 export const fetchUsersList = async () => {
   const snapshot = await getDocs(users);
   const usersList = snapshot.docs.map((doc) => doc.data());
   return usersList;
 };
 
-//Gets all the chats for the curent user
-export const fetchChatsList = async (userId: string) => {
-  const docRef = doc(db, "users", userId);
-
-  const userChats = (await getDoc(docRef)).data()?.chatIds;
-
-  return userChats;
-};
-
-//Gett all the chat requests
-export const fetchChatRequests = async (userId: string) => {
-    const docRef = doc(db, "users", userId);
-    const docSnap = await getDoc(docRef);
-
-    const data = docSnap.data();
-    return data?.chatRequestsRecieved;
-};
-
+//**********************************//
 export const getUserDetails = async (userId?: string) => {
   if (userId) {
     const docRef = doc(db, "users", userId);
@@ -41,54 +23,74 @@ export const getUserDetails = async (userId?: string) => {
   }
 };
 
-// Sends a chat request to specifed user
-export const sendChatRequest = async (receiverUserData: DocumentData, requesterUserId?: string) => {
-  const { uid, displayName, photoURL } = receiverUserData;
+//**********************************//
+export const getChatMembers = async () => {
+  const chatId = sessionStorage.getItem("chatId");
+
+  const docRef = doc(db, 'chats', chatId ?? '')
+
+  const docSnap = await getDoc(docRef)
+
+  return docSnap.data()?.members
+}
+
+//**********************************//
+export const sendChatRequest = async (receiverUserData: DocumentData, requesterUserData: DocumentData) => {
+  const requestId = uuidv4();
+  const { uid } = receiverUserData;
+  const { displayName, photoURL } = requesterUserData
   const receiverUserRef = doc(db, "users", uid);
 
-  // Send a chat request to the receiver user
-  await updateDoc(receiverUserRef, {
-    chatRequestsRecieved: arrayUnion({
-      uid: requesterUserId,
-      displayName,
-      photoURL,
-      createdAt: new Date().toDateString(),
-    }),
-  });
+  await setDoc(receiverUserRef, {
+    chatRequestsRecieved: {
+      [requestId]: {
+        uid: requesterUserData.uid,
+        displayName,
+        photoURL,
+        createdAt: new Date().toDateString(),
+      },
+    },
+  }, {merge: true});
 
-  requesterUserId &&
-    (await updateDoc(doc(db, "users", requesterUserId), {
-      chatRequestsSent: arrayUnion({
+  await updateDoc(doc(db, "users", requesterUserData.uid), {
+    chatRequestsSent: {
+      [requestId]: {
         uid,
         createdAt: new Date().toDateString(),
-      }),
-    }));
+      },
+    },
+  });
 };
-// Accept chat request from caht requests amd creates a new chat in chats collection
-export const acceptChatRequest = async (requester: DocumentData, senderUserId?: string) => {
+
+//**********************************//
+export const acceptChatRequest = async (chatRequest: DocumentData, currentUser: DocumentData, requestId: string) => {
   const newChatUUID = uuidv4();
 
-  const requesterUserRef = doc(db, "users", requester.uid);
+  const requesterUserRef = doc(db, "users", chatRequest.uid);
+
+  const v1 = `chatRequestsRecieved.${requestId}`
+  const v2 = `chatRequestsSent.${requestId}`
 
   await updateDoc(requesterUserRef, {
     chatIds: arrayUnion(newChatUUID),
-    chatRequests: arrayRemove(),
+    [v2]: deleteField(),
   });
 
-  await updateDoc(doc(db, "users", senderUserId ?? ""), {
+  await updateDoc(doc(db, "users", currentUser.uid), {
     chatIds: arrayUnion(newChatUUID),
-    chatRequests: arrayRemove(requester),
+    [v1]: deleteField(),
   });
 
   const chatDocumentRef = doc(db, "chats", newChatUUID);
 
   await setDoc(chatDocumentRef, {
-    members: [requester.uid, senderUserId],
+    members: [chatRequest.uid, currentUser.uid],
   });
 
   await addDoc(collection(db, `chats/${newChatUUID}/messages`), {});
 };
 
+//**********************************//
 export const getChatData = async (chatId: string) => {
   sessionStorage.setItem("chatId", chatId);
 
@@ -104,6 +106,7 @@ export const getChatData = async (chatId: string) => {
   return { messages, participants };
 };
 
+//**********************************//
 export const sendMessage = async (message: string, uid: string) => {
   const chatUid = sessionStorage.getItem("chatId");
 
