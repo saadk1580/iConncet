@@ -40,7 +40,8 @@ export const sendChatRequest = async (receiverUserData: DocumentData, requesterU
   const receiverUserRef = doc(db, "users", uid);
 
   await setDoc(
-    receiverUserRef, {
+    receiverUserRef,
+    {
       chatRequestsRecieved: {
         [requestId]: {
           uid: requesterUserData.uid,
@@ -49,21 +50,26 @@ export const sendChatRequest = async (receiverUserData: DocumentData, requesterU
           createdAt: new Date().toDateString(),
         },
       },
-    }, {merge: true}
+    },
+    { merge: true }
   );
 
-  await setDoc(doc(db, "users", requesterUserData.uid), {
-    chatRequestsSent: {
-      [requestId]: {
-        uid,
-        createdAt: new Date().toDateString(),
+  await setDoc(
+    doc(db, "users", requesterUserData.uid),
+    {
+      chatRequestsSent: {
+        [requestId]: {
+          uid,
+          createdAt: new Date().toDateString(),
+        },
       },
     },
-}, {merge: true});
+    { merge: true }
+  );
 };
 
 //**********************************//
-export const acceptChatRequest = async (chatRequest: DocumentData, currentUser: DocumentData, requestId: string) => {
+export const respondChatRequest = async (chatRequest: DocumentData, currentUser: DocumentData, requestId: string, response: boolean) => {
   const newChatUUID = uuidv4();
 
   const requesterUserRef = doc(db, "users", chatRequest.uid);
@@ -72,44 +78,45 @@ export const acceptChatRequest = async (chatRequest: DocumentData, currentUser: 
   const v1 = `chatRequestsRecieved.${requestId}`;
   const v2 = `chatRequestsSent.${requestId}`;
 
-  await setDoc(
-    requesterUserRef,
-    {
-      chats: {
-        [newChatUUID]: {
-          participants: {
-            displayName: currentUser.displayName,
-            photoURL: currentUser.photoURL,
-            uid: currentUser.uid,
+  if (response) {
+    await setDoc(
+      requesterUserRef,
+      {
+        chats: {
+          [newChatUUID]: {
+            participants: {
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL,
+              uid: currentUser.uid,
+            },
           },
         },
       },
-    },
-    { merge: true }
-  );
+      { merge: true }
+    );
 
-  await setDoc(
-    currentUserRef,
-    {
-      chats: {
-        [newChatUUID]: {
-          participants: {
-            ...chatRequest,
+    await setDoc(
+      currentUserRef,
+      {
+        chats: {
+          [newChatUUID]: {
+            participants: {
+              ...chatRequest,
+            },
           },
         },
       },
-    },
-    { merge: true }
-  );
+      { merge: true }
+    );
+  }
 
   await updateDoc(requesterUserRef, {
     [v2]: deleteField(),
-  })
+  });
 
   await updateDoc(currentUserRef, {
-    [v1]: deleteField()
-  })
-
+    [v1]: deleteField(),
+  });
 
   const chatDocumentRef = doc(db, "chats", newChatUUID);
 
@@ -119,6 +126,8 @@ export const acceptChatRequest = async (chatRequest: DocumentData, currentUser: 
 
   await addDoc(collection(db, `chats/${newChatUUID}/messages`), {});
 };
+
+export const declineChatRequest = () => {};
 
 //**********************************//
 export const getChatData = async (chatId: string) => {

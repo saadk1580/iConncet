@@ -10,29 +10,27 @@ export const SearchUsers = () => {
 
   const currentUser = useContext(UserContext);
 
-
   useEffect(() => {
     const getData = async () => {
       const usersList = await fetchUsersList();
       setUsers(usersList);
     };
+    
     getData();
   }, []);
-
 
 
   return (
     <div>
       <h1>Search chatters</h1>
       <ul>
-        {users.map((user) => (
+        {users.filter((user) => user.uid !== currentUser.uid).map((user) => (
           <>
-          <li>{user.uid}</li>
+          <li>{user.displayName}</li>
           <button onClick={async () => await sendChatRequest(user, currentUser)}>Add</button>
           </>
         ))}
       </ul>
-      <ChatRequests />
     </div>
   );
 };

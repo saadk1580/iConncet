@@ -14,7 +14,6 @@ export const Container = styled.div({
   width: "50vw",
   paddingBottom: "5px",
   backgroundColor: "#101112",
-  border: "1px solid white",
 });
 
 export const ChatHeader = () => {

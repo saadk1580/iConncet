@@ -6,8 +6,15 @@ import styled from "@emotion/styled";
 import { db } from "../Auth/Auth";
 import { useNavigate } from "react-router";
 
+type Participants = {
+  displayName: string;
+  uid: string;
+  photoURL: string;
+};
+
 const Container = styled.div({
   maxWidth: "300px",
+  maxHeight: "30vh",
 });
 
 export const ChatList = () => {
@@ -31,12 +38,19 @@ export const ChatList = () => {
 
   return (
     <Container>
-      <div className="group-chats">
+      <div>
         <h1 className="groups-title">
           {/* <ExpandMoreIcon />  */}
           CHATS
         </h1>
-        <ul>{chats && Object.entries(chats).map(([chatId, participants]) => <li key={chatId} onClick={() => navigate(`/chats/${chatId}`)}>{chatId}</li>)}</ul>
+        <ul>
+          {chats &&
+            Object.entries(chats).map(([chatId, participants]) => (
+              <li key={chatId} onClick={() => navigate(`/chats/${chatId}`)}>
+                {participants.participants.displayName}
+              </li>
+            ))}
+        </ul>
       </div>
       <div>
         <div className="group-members-container">
