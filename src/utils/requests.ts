@@ -24,42 +24,42 @@ export const getUserDetails = async (userId?: string) => {
 };
 
 //**********************************//
-export const getChatMembers = async () => {
-  const chatId = sessionStorage.getItem("chatId");
+export const getChatMembers = async (chatId: string) => {
+  const docRef = doc(db, "chats", chatId ?? "");
 
-  const docRef = doc(db, 'chats', chatId ?? '')
+  const docSnap = await getDoc(docRef);
 
-  const docSnap = await getDoc(docRef)
-
-  return docSnap.data()?.members
-}
+  return docSnap.data()?.members;
+};
 
 //**********************************//
 export const sendChatRequest = async (receiverUserData: DocumentData, requesterUserData: DocumentData) => {
   const requestId = uuidv4();
   const { uid } = receiverUserData;
-  const { displayName, photoURL } = requesterUserData
+  const { displayName, photoURL } = requesterUserData;
   const receiverUserRef = doc(db, "users", uid);
 
-  await setDoc(receiverUserRef, {
-    chatRequestsRecieved: {
-      [requestId]: {
-        uid: requesterUserData.uid,
-        displayName,
-        photoURL,
-        createdAt: new Date().toDateString(),
+  await setDoc(
+    receiverUserRef, {
+      chatRequestsRecieved: {
+        [requestId]: {
+          uid: requesterUserData.uid,
+          displayName,
+          photoURL,
+          createdAt: new Date().toDateString(),
+        },
       },
-    },
-  }, {merge: true});
+    }, {merge: true}
+  );
 
-  await updateDoc(doc(db, "users", requesterUserData.uid), {
+  await setDoc(doc(db, "users", requesterUserData.uid), {
     chatRequestsSent: {
       [requestId]: {
         uid,
         createdAt: new Date().toDateString(),
       },
     },
-  });
+}, {merge: true});
 };
 
 //**********************************//
@@ -67,19 +67,49 @@ export const acceptChatRequest = async (chatRequest: DocumentData, currentUser: 
   const newChatUUID = uuidv4();
 
   const requesterUserRef = doc(db, "users", chatRequest.uid);
+  const currentUserRef = doc(db, "users", currentUser.uid);
 
-  const v1 = `chatRequestsRecieved.${requestId}`
-  const v2 = `chatRequestsSent.${requestId}`
+  const v1 = `chatRequestsRecieved.${requestId}`;
+  const v2 = `chatRequestsSent.${requestId}`;
+
+  await setDoc(
+    requesterUserRef,
+    {
+      chats: {
+        [newChatUUID]: {
+          participants: {
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            uid: currentUser.uid,
+          },
+        },
+      },
+    },
+    { merge: true }
+  );
+
+  await setDoc(
+    currentUserRef,
+    {
+      chats: {
+        [newChatUUID]: {
+          participants: {
+            ...chatRequest,
+          },
+        },
+      },
+    },
+    { merge: true }
+  );
 
   await updateDoc(requesterUserRef, {
-    chatIds: arrayUnion(newChatUUID),
     [v2]: deleteField(),
-  });
+  })
 
-  await updateDoc(doc(db, "users", currentUser.uid), {
-    chatIds: arrayUnion(newChatUUID),
-    [v1]: deleteField(),
-  });
+  await updateDoc(currentUserRef, {
+    [v1]: deleteField()
+  })
+
 
   const chatDocumentRef = doc(db, "chats", newChatUUID);
 
@@ -92,8 +122,6 @@ export const acceptChatRequest = async (chatRequest: DocumentData, currentUser: 
 
 //**********************************//
 export const getChatData = async (chatId: string) => {
-  sessionStorage.setItem("chatId", chatId);
-
   const docRef = await getDoc(doc(db, "chats", chatId));
 
   const messagesdocRef = collection(db, `chats/${chatId}/messages`);
@@ -107,13 +135,10 @@ export const getChatData = async (chatId: string) => {
 };
 
 //**********************************//
-export const sendMessage = async (message: string, uid: string) => {
-  const chatUid = sessionStorage.getItem("chatId");
-
-  chatUid &&
-    (await addDoc(collection(db, `chats/${chatUid}/messages`), {
-      text: message,
-      uid,
-      createdAt: serverTimestamp(),
-    }));
+export const sendMessage = async (message: string, uid: string, chatId?: string) => {
+  await addDoc(collection(db, `chats/${chatId}/messages`), {
+    text: message,
+    uid,
+    createdAt: serverTimestamp(),
+  });
 };

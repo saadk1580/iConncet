@@ -4,6 +4,7 @@ import "./Chat.css";
 import { Container, Image, Message, Date, Name, MessageBox, Text, InnerContainer, MessageContainer } from "./Styles";
 import { db } from "../Auth/Auth";
 import { UserContext } from "../App/App";
+import { useParams } from "react-router";
 
 type Message = {
   text: string;
@@ -23,22 +24,25 @@ const Chat = () => {
   const dummy = useRef<HTMLDivElement>(null);
   const user = useContext(UserContext);
 
+  const { chatId } = useParams();
+
   const [participants, setParticipants] = useState<DocumentData>();
   const [messages, setMessages] = useState<DocumentData>();
-  const chatId = sessionStorage.getItem("chatId");
+  // const chatId = sessionStorage.getItem("chatId");
 
   useEffect(() => {
     const q = query(collection(db, `chats/${chatId}/messages`), orderBy("createdAt"));
-    chatId &&
-      onSnapshot(q, (snapshot) => {
-        const data = snapshot.docs.map((chat) => {
-          dummy.current && dummy.current.scrollIntoView({ behavior: "instant" });
+    const unsub = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((chat) => {
+        dummy.current && dummy.current.scrollIntoView({ behavior: "instant" });
 
-          return chat.data();
-        });
-        setMessages(data);
+        return chat.data();
       });
-  }, []);
+      setMessages(data);
+    });
+
+    return () => unsub();
+  }, [chatId]);
 
 
   return (

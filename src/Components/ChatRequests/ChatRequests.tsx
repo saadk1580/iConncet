@@ -15,11 +15,13 @@ export const ChatRequests = () => {
   const { uid } = currentUser;
 
   useEffect(() => {
-    const docRef = doc(db, "users", uid);
-    onSnapshot(docRef, (snapshot) => {
-      const data = snapshot.data()?.chatRequestsRecieved;
-      setRequests(data);
-    });
+  const docRef = doc(db, "users", uid);
+  const unsub =  onSnapshot(docRef, (snapshot) => {
+    const data = snapshot.data()?.chatRequestsRecieved;
+    setRequests(data);
+  });
+
+  return () => unsub()
   }, []);
 
   return (

@@ -7,6 +7,7 @@ import { Container, Icons, InputContainter } from "./Styles";
 import { sendMessage } from "../../utils/requests";
 import { useContext, useState } from "react";
 import { UserContext } from "../App/App";
+import { useParams } from "react-router";
 
 
 const badWordCheck = (text: string) => {
@@ -17,8 +18,11 @@ const badWordCheck = (text: string) => {
 };
 
 export const ChatInput = () => {
+  const {chatId } = useParams()
+
   const user = useContext(UserContext)
   const [message, setMessage] = useState<string>('')
+
   return (
     <Container>
       <Icons>
@@ -39,7 +43,7 @@ export const ChatInput = () => {
             setMessage(text)
           }}
           onEnter={(ev: Event) => {
-            sendMessage(message, user?.uid)
+            message.length && sendMessage(message, user?.uid, chatId)
           }}
           cleanOnEnter
           value=""
