@@ -144,10 +144,11 @@ export const getChatData = async (chatId: string) => {
 };
 
 //**********************************//
-export const sendMessage = async (message: string, uid: string, chatId?: string) => {
+export const sendMessage = async (message: string, uid: string, chatId?: string, imageUrl?: string | null) => {
   await addDoc(collection(db, `chats/${chatId}/messages`), {
     text: message,
     uid,
     createdAt: serverTimestamp(),
+    imageUrl: imageUrl ? imageUrl : ''
   });
 };

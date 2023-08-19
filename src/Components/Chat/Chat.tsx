@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import { DocumentData, Timestamp, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import "./Chat.css";
-import { Container, Image, Message, Date, Name, MessageBox, Text, InnerContainer, MessageContainer } from "./Styles";
+import { Container, Image, Message, Date, Name, MessageBox, Text, Section, MessageContainer } from "./Chat.styles";
 import { db } from "../Auth/Auth";
 import { UserContext } from "../App/App";
 import { useParams } from "react-router";
@@ -23,54 +23,48 @@ const formatDate = (timestamp?: Timestamp) => {
 const Chat = () => {
   const dummy = useRef<HTMLDivElement>(null);
   const user = useContext(UserContext);
-
   const { chatId } = useParams();
 
-  const [participants, setParticipants] = useState<DocumentData>();
-  const [messages, setMessages] = useState<DocumentData>();
-  // const chatId = sessionStorage.getItem("chatId");
+  const [messages, setMessages] = useState<DocumentData[]>([]);
 
   useEffect(() => {
     const q = query(collection(db, `chats/${chatId}/messages`), orderBy("createdAt"));
     const unsub = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((chat) => {
-        dummy.current && dummy.current.scrollIntoView({ behavior: "instant" });
-
-        return chat.data();
-      });
+      const data = snapshot.docs.map((chat) => chat.data());
       setMessages(data);
+      dummy.current?.scrollIntoView({ behavior: "instant" });
     });
 
+    window.scrollTo(0, document.body.scrollHeight);
     return () => unsub();
   }, [chatId]);
 
-
   return (
-    <Container>
-      {messages &&
-        messages.map((message: Message, idx: number) => {
-          const date = formatDate();
-          const prevDate = idx !== 0 ? formatDate() : "";
+    <Container >
+      <div>
+      {messages.map((message: any, idx: number) => {
+        const date = formatDate(message.createdAt); // Assuming you have a formatDate function
+        const prevDate = idx !== 0 ? formatDate(messages[idx - 1].createdAt) : "";
 
-          return (
-            <InnerContainer ref={dummy}>
-              <Date>{idx === 0 || date !== prevDate ? date : ""}</Date>
-              <MessageContainer role={message.uid === user?.uid ? "sent" : "received"}>
-                {message.uid === "efg" && <Name>{message.name}</Name>}
-                <MessageBox>
-                  <Message>
-                    <Text>{message.text}</Text>
-                    {message.imageUrl !== null ?? (
-                      <a href={message.imageUrl} target="_blank">
-                        <Image src={message.imageUrl} />
-                      </a>
-                    )}
-                  </Message>
-                </MessageBox>
-              </MessageContainer>
-            </InnerContainer>
-          );
-        })}
+        return (
+          <Section ref={dummy} key={idx}>
+            <Date>{idx === 0 || date !== prevDate ? date : ""}</Date>
+            <MessageContainer role={message.uid === user?.uid ? "sent" : "received"}>
+              <MessageBox>
+                <Message>
+                  <Text>{message.text}</Text>
+                  {message.imageUrl ? (
+                    <a href={message.imageUrl} target="_blank" rel="noopener noreferrer">
+                      <Image src={message.imageUrl} />
+                    </a>
+                  ) : null}
+                </Message>
+              </MessageBox>
+            </MessageContainer>
+          </Section>
+        );
+      })}
+      </div>
     </Container>
   );
 };

@@ -14,7 +14,27 @@ import { ChatRequests } from "../ChatRequests/ChatRequests";
 
 const Container = styled.div({
   display: "flex",
+  fontFamily: '"Poppins", sans-serif',
+  color: '#ffffff'
+
 });
+
+const LeftContainer = styled.div({
+  minWidth: '380px',
+  display: "flex", 
+  flexDirection: "column",
+  padding: '1rem',
+  backgroundColor: "#181a1b",
+})
+
+const MidContainer = styled.div({
+  backgroundColor: "#101112",
+  minWidth: '100px',
+  height: '100vh',
+  position: 'relative',
+  flex: 1,
+})
+
 
 export type Data = {
   users: DocumentData[];
@@ -22,6 +42,7 @@ export type Data = {
 };
 
 export const UserContext = createContext<DocumentData>({});
+
 
 function App() {
   const user = useStateObserver();
@@ -31,16 +52,16 @@ function App() {
   return (
     <UserContext.Provider value={user}>
       <Container>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <LeftContainer>
           <ProfileInfo />
           <ChatRequests />
           <ChatList />
-        </div>
-        <div>
+        </LeftContainer>
+        <MidContainer>
           <ChatHeader />
           <Chat />
           <ChatInput />
-        </div>
+        </MidContainer>
         <SearchUsers />
       </Container>
     </UserContext.Provider>

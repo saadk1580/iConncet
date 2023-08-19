@@ -17,6 +17,12 @@ const Container = styled.div({
   maxHeight: "30vh",
 });
 
+const List = styled.ul({
+  ' > li': {
+    listStyle: 'none'
+  }
+})
+
 export const ChatList = () => {
   const navigate = useNavigate();
 
@@ -43,20 +49,14 @@ export const ChatList = () => {
           {/* <ExpandMoreIcon />  */}
           CHATS
         </h1>
-        <ul>
+        <List>
           {chats &&
             Object.entries(chats).map(([chatId, participants]) => (
               <li key={chatId} onClick={() => navigate(`/chats/${chatId}`)}>
                 {participants.participants.displayName}
               </li>
             ))}
-        </ul>
-      </div>
-      <div>
-        <div className="group-members-container">
-          {/* <p style={{ marginLeft: "10px" }}>{eventName.toUpperCase()}</p> */}
-          <div className="group-members"></div>
-        </div>
+        </List>
       </div>
     </Container>
   );

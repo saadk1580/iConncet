@@ -3,19 +3,30 @@ import styled from "@emotion/styled";
 const lightGray = "#181a1b";
 
 export const Container = styled.div({
+  justifyContent: 'flex-start',
+  flexDirection: "column-reverse", 
   backgroundColor: "#101112",
   color: "#ccd3d5",
   display: "flex",
   fontFamily: '"Poppins", sans-serif',
-  flexDirection: "column",
-  padding: "60px 40px",
-  width: "50vw",
-  height: "100vh",
+  padding: "10px 40px",
   overflow: "auto",
   scrollBehavior: "smooth",
-  scrollMarginBottom: "20px",
-  scrollMarginTop: "20px",
+  scrollMarginBottom: '20px',
+  scrollMarginTop: '20px',
+  marginTop: 'auto',
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: '73px',
+  bottom: '90px',
+ 
 });
+
+export const Section = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+})
 
 export const Image = styled.img({
   width: "200px",
@@ -51,11 +62,9 @@ export const Name = styled.p({
   fontSize: "0.8rem",
 });
 
-export const Text = styled.p({})
-
-export const InnerContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
+export const Text = styled.p({
+  fontSize: '1rem',
+  color: '#ffffff'
 })
 
 export const MessageContainer = styled.div(props => ({
@@ -66,5 +75,6 @@ export const MessageContainer = styled.div(props => ({
   borderRadius: props.role === 'sent' ? '15px 15px 0px 15px' : '15px 15px 15px 0px',
   margin: '0 3px',
   fontSize: '1rem',
+
 }))
 

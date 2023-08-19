@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Container } from "./Styles";
+import { Container } from "./ProfileInfo.Styles";
 import { UserContext } from "../App/App";
 
 export const ProfileInfo = () => {
@@ -7,11 +7,11 @@ export const ProfileInfo = () => {
 
   const user = useContext(UserContext);
 
-  const { displayName, photoURL} = user ?? {};
+  const { displayName, photoURL } = user ?? {};
 
   return (
     <Container className="user-status">
-      {photoURL &&<img src={photoURL} className="user-status-img" />}
+      {photoURL && <img src={photoURL} className="user-status-img" />}
       <div>
         <p style={{ fontSize: "1.1rem" }}>{displayName}</p>
         <p
@@ -29,24 +29,13 @@ export const ProfileInfo = () => {
       <div className="dropdown-btn">
         <p>...</p>
         <ul className="dropdown-chat">
-          <li
-            onClick={() => setStatus("Active")}
-            style={{ borderBottom: "1px solid #333" }}
-            className="dropdown-item-chat"
-          >
+          <li onClick={() => setStatus("Active")} style={{ borderBottom: "1px solid #333" }} className="dropdown-item-chat">
             Active
           </li>
-          <li
-            onClick={() => setStatus("Away")}
-            style={{ borderBottom: "1px solid #333" }}
-            className="dropdown-item-chat"
-          >
+          <li onClick={() => setStatus("Away")} style={{ borderBottom: "1px solid #333" }} className="dropdown-item-chat">
             Away
           </li>
-          <li
-            onClick={() => setStatus("Offline")}
-            className="dropdown-item-chat"
-          >
+          <li onClick={() => setStatus("Offline")} className="dropdown-item-chat">
             Offline
           </li>
         </ul>

@@ -8,12 +8,22 @@ import { useParams } from "react-router";
 
 export const Container = styled.div({
   display: "flex",
-  position: "fixed",
-  flexDirection: "column",
   top: 0,
-  width: "50vw",
+  alignItems: 'center',
   paddingBottom: "5px",
   backgroundColor: "#101112",
+  borderBottom: '1px solid #333333',
+  padding: '1em',
+  position: 'absolute',
+  height: '73px',
+  left: 0,
+  right: 0,
+  
+  '> img': {
+    marginRight: '1em',
+    borderRadius: '50%'
+  },
+
 });
 
 export const ChatHeader = () => {
@@ -35,8 +45,8 @@ export const ChatHeader = () => {
 
   return (
     <Container>
-      <img src={user.photoURL} width={40} />
-      <p style={{ color: "white" }}>{user.displayName}</p>
+      {user.photoURL && <img src={user.photoURL} width={40} />}
+      <h3 style={{ color: "white" }}>{user.displayName}</h3>
     </Container>
   );
 };
