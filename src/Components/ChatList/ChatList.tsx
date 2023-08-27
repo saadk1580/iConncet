@@ -37,12 +37,12 @@ export const ChatList = () => {
           CHATS
         </h1>
         <List>
-          {chats?.length ? 
+          {chats  &&
             Object.entries(chats).map(([chatId, participants]) => (
               <ListItems key={chatId} onClick={() => navigate(`/chats/${chatId}`)}>
                 {participants.participants.displayName}
               </ListItems>
-            )) : <p>No chats available</p>}
+            ))}
         </List>
     </Container>
   );
