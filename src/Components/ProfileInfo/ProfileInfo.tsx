@@ -11,7 +11,7 @@ export const ProfileInfo = () => {
 
   return (
     <Container className="user-status">
-      {photoURL && <img src={photoURL} className="user-status-img" />}
+      {photoURL && <img width={50} src={photoURL} className="user-status-img" />}
       <div>
         <p style={{ fontSize: "1.1rem" }}>{displayName}</p>
         <p

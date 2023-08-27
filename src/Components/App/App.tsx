@@ -1,40 +1,18 @@
-import "./App.css";
 import "../Auth/Auth";
 import Chat from "../Chat/Chat";
 import { ChatInput } from "../ChatInput/ChatInput";
 import { SearchUsers } from "../SearchUsers/SearchUsers";
-import styled from "@emotion/styled";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import { DocumentData } from "firebase/firestore";
-import { ProfileInfo } from "../ProfileInfo/ProfileInfo";
 import { useStateObserver } from "../../hooks/useStateOberser";
 import { ChatList } from "../ChatList/ChatList";
 import { ChatHeader } from "../ChatHeader/ChatHeader";
 import { ChatRequests } from "../ChatRequests/ChatRequests";
-
-const Container = styled.div({
-  display: "flex",
-  fontFamily: '"Poppins", sans-serif',
-  color: '#ffffff'
-
-});
-
-const LeftContainer = styled.div({
-  minWidth: '380px',
-  display: "flex", 
-  flexDirection: "column",
-  padding: '1rem',
-  backgroundColor: "#181a1b",
-})
-
-const MidContainer = styled.div({
-  backgroundColor: "#101112",
-  minWidth: '100px',
-  height: '100vh',
-  position: 'relative',
-  flex: 1,
-})
-
+import { LeftContainer, MidContainer, Container, LogoutButton, DeleteButton } from "./App.styles";
+import { Spinner } from "../Icons/Spinner";
+import { signOut } from "firebase/auth";
+import { auth } from "../Auth/Auth";
+import { Confirm } from "../Confirm/Confirm";
 
 export type Data = {
   users: DocumentData[];
@@ -45,17 +23,21 @@ export const UserContext = createContext<DocumentData>({});
 
 
 function App() {
-  const user = useStateObserver();
+  const { userDetails } = useStateObserver();
+  const [hidden, setHiddem] = useState(false)
 
-  if (user === undefined) return <h1>Loading</h1>;
+  if (userDetails === undefined) return <Spinner width={50} color="black" />;
+
 
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={userDetails}>
       <Container>
+        {hidden && <Confirm setHiddem={setHiddem}/>}
         <LeftContainer>
-          <ProfileInfo />
           <ChatRequests />
           <ChatList />
+          <LogoutButton onClick={() => signOut(auth)}>Log out</LogoutButton>
+          <DeleteButton onClick={() => setHiddem(true)}>Delete Account</DeleteButton>
         </LeftContainer>
         <MidContainer>
           <ChatHeader />

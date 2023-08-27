@@ -1,23 +1,14 @@
-import { fetchUsersList, sendChatRequest} from "../../utils/requests";
+import { fetchUsersList, sendChatRequest } from "../../utils/requests";
 import { useContext, useEffect, useState } from "react";
 import { DocumentData } from "firebase/firestore";
 import { UserContext } from "../App/App";
-import { ChatRequests } from "../ChatRequests/ChatRequests";
+import { Container, List, ListItem } from './SearchUsers.styles'
 import styled from "@emotion/styled";
-import { mq } from "../../utils/breakpoints";
 
-const Container = styled.div({
-  minWidth: '300px',
-  backgroundColor: "#181a1b",
-
-  '> input': {
-    padding: '0.5rem',
-    borderRadius: '10px',
-    margin: '1rem',
-    width: '15vw'
-  }
+const AddButton = styled.button({
+  padding: '5px 10px',
+  
 })
-
 
 export const SearchUsers = () => {
   const [users, setUsers] = useState<DocumentData[]>([]);
@@ -29,22 +20,23 @@ export const SearchUsers = () => {
       const usersList = await fetchUsersList();
       setUsers(usersList);
     };
-    
+
     getData();
   }, []);
 
-
   return (
     <Container>
-      <input placeholder="Search Chatters" />
-      <ul>
-        {users.filter((user) => user.uid !== currentUser.uid).map((user) => (
-          <>
-          <li>{user.displayName}</li>
-          <button onClick={async () => await sendChatRequest(user, currentUser)}>Add</button>
-          </>
-        ))}
-      </ul>
+      <h1>Add to chat</h1>
+      <List>
+        {users
+          .filter((user) => user.uid !== currentUser.uid)
+          .map((user) => (
+            <ListItem>
+              {user.displayName}
+              <AddButton onClick={async () => await sendChatRequest(user, currentUser)}>Add</AddButton>
+            </ListItem>
+          ))}
+      </List>
     </Container>
   );
 };

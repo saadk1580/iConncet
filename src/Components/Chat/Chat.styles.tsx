@@ -63,7 +63,8 @@ export const Name = styled.p({
 });
 
 export const Text = styled.p({
-  fontSize: '1rem',
+  lineHeight: '1.4rem',
+  fontSize: '1.1rem',
   color: '#ffffff'
 })
 
@@ -71,7 +72,7 @@ export const MessageContainer = styled.div(props => ({
   alignSelf: props.role === 'sent' ? 'flex-end' : '',
   backgroundColor: props.role === 'sent' ? 'rgb(0, 135, 224)' : '#333333',
   width: 'fit-content',
-  padding: '5px 15px',
+  padding: '10px 15px',
   borderRadius: props.role === 'sent' ? '15px 15px 0px 15px' : '15px 15px 15px 0px',
   margin: '0 3px',
   fontSize: '1rem',

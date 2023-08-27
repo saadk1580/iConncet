@@ -24,17 +24,16 @@ export const InputContainter = styled.div({
   display: "flex",
   backgroundColor: "#101112",
   justifyContent: "center",
+  alignItems: 'center'
 });
 
 export const ImgIngput = styled.input({
-  // display: 'none'
+  display: 'none'
 })
 
 export const ImageIconLabel = styled.label({
-  margin:' 15.5px 12px 0 0',
-  alignItems: 'center',
+  marginRight: '1em',
   ':hover' : {
     cursor: 'pointer',
-
   }
 })

@@ -43,7 +43,7 @@ export const ChatInput = () => {
           onChange={setMessage}
           onEnter={() => {
             message.length && sendMessage(message, user?.uid, chatId, fileUrl);
-            setFileUrl(null)
+            setFileUrl(null);
           }}
           cleanOnEnter
           value={message}
@@ -51,12 +51,10 @@ export const ChatInput = () => {
           className="msg-input"
         />
 
-        <div>
-          <ImgIngput type="file" accept="image/png, image/gif, image/jpeg, image/svg" onChange={handleFileUpload} />
-          <ImageIconLabel>
-            <PhotoIcon />
-          </ImageIconLabel>
-        </div>
+        <ImgIngput id="file-input" type="file" accept="image/png, image/gif, image/jpeg, image/svg" onChange={handleFileUpload} />
+        <ImageIconLabel htmlFor="file-input">
+          <PhotoIcon />
+        </ImageIconLabel>
       </InputContainter>
     </Container>
   );

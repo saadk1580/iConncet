@@ -5,22 +5,19 @@ import { DocumentData } from "firebase/firestore";
 import { getUserDetails } from "../utils/requests";
 
 export const useStateObserver = () => {
-  const [user, setUser] = useState<User | null>();
+  const [loading, setLoading] = useState(true);
   const [userDetails, setUserDetails] = useState<DocumentData>();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user_) => setUser(user_));
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      const data = await getUserDetails(user?.uid);
+      setUserDetails(data);
+
+      setLoading(false); // Set loading to false once we have a response
+    });
 
     return () => unsub();
   }, []);
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await getUserDetails(user?.uid);
-      setUserDetails(data);
-    };
-    getData();
-  }, [user]);
-
-  return userDetails;
+  return { userDetails, loading };
 };

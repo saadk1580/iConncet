@@ -4,11 +4,18 @@ import { respondChatRequest } from "../../utils/requests";
 import styled from "@emotion/styled";
 import { UserContext } from "../App/App";
 import { db } from "../Auth/Auth";
+import { Container, Img, List, ListItem, Name, ResponseBtns, Right } from "./ChatRequests.styles";
+
+const Button = styled.div(({ role }) => ({
+  backgroundColor: role === "accept" ? "lightBlue" : "darkGray",
+  width: "fit-content",
+  padding: "5px 8px",
+  borderRadius: "5px",
+  color: "black",
+}));
 
 export const ChatRequests = () => {
   const [requests, setRequests] = useState<DocumentData>();
-
-  const Container = styled.div({});
 
   const currentUser = useContext(UserContext);
 
@@ -24,24 +31,31 @@ export const ChatRequests = () => {
     return () => unsub();
   }, []);
 
-  const reqs = Object.entries(requests ?? {})
+  const reqs = Object.entries(requests ?? {});
 
   return (
     <Container>
-      <h1 className="groups-title"> REQUESTS</h1>
-      <ul>
-        {reqs.length ? 
+      <h1>REQUESTS</h1>
+      <List>
+        {reqs.length ? (
           reqs.map(([reqId, receiver]) => {
             return (
-              <li>
-                <img src={receiver.photoURL} width={20} />
-                {receiver.displayName}
-                <button onClick={() => respondChatRequest(receiver, currentUser, reqId, true)}>Accept</button>
-                <button onClick={() => respondChatRequest(receiver, currentUser, reqId, false)}>Decline</button>
-              </li>
+              <ListItem>
+                {/* <Img src={receiver.photoURL} /> */}
+                <Name>{receiver.displayName}</Name>
+                <ResponseBtns>
+                  <Button role="accept" onClick={() => respondChatRequest(receiver, currentUser, reqId, true)}>
+                    Accept
+                  </Button>
+                  <Button onClick={() => respondChatRequest(receiver, currentUser, reqId, false)}>Decline</Button>
+                </ResponseBtns>
+              </ListItem>
             );
-          }) : <p>No chat requests</p>}
-      </ul>
+          })
+        ) : (
+          <p>No chat requests</p>
+        )}
+      </List>
     </Container>
   );
 };

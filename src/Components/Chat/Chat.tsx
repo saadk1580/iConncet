@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext, FC } from "react";
 import { DocumentData, Timestamp, collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import "./Chat.css";
 import { Container, Image, Message, Date, Name, MessageBox, Text, Section, MessageContainer } from "./Chat.styles";
 import { db } from "../Auth/Auth";
 import { UserContext } from "../App/App";
@@ -40,30 +39,30 @@ const Chat = () => {
   }, [chatId]);
 
   return (
-    <Container >
+    <Container>
       <div>
-      {messages.map((message: any, idx: number) => {
-        const date = formatDate(message.createdAt); // Assuming you have a formatDate function
-        const prevDate = idx !== 0 ? formatDate(messages[idx - 1].createdAt) : "";
+        {messages.map((message: any, idx: number) => {
+          const date = formatDate(message.createdAt); // Assuming you have a formatDate function
+          const prevDate = idx !== 0 ? formatDate(messages[idx - 1].createdAt) : "";
 
-        return (
-          <Section ref={dummy} key={idx}>
-            <Date>{idx === 0 || date !== prevDate ? date : ""}</Date>
-            <MessageContainer role={message.uid === user?.uid ? "sent" : "received"}>
-              <MessageBox>
-                <Message>
-                  <Text>{message.text}</Text>
-                  {message.imageUrl ? (
-                    <a href={message.imageUrl} target="_blank" rel="noopener noreferrer">
-                      <Image src={message.imageUrl} />
-                    </a>
-                  ) : null}
-                </Message>
-              </MessageBox>
-            </MessageContainer>
-          </Section>
-        );
-      })}
+          return (
+            <Section ref={dummy} key={idx}>
+              <Date>{idx === 0 || date !== prevDate ? date : ""}</Date>
+              <MessageContainer role={message.uid === user?.uid ? "sent" : "received"}>
+                <MessageBox>
+                  <Message>
+                    <Text>{message.text}</Text>
+                    {message.imageUrl ? (
+                      <a href={message.imageUrl} target="_blank" rel="noopener noreferrer">
+                        <Image src={message.imageUrl} />
+                      </a>
+                    ) : null}
+                  </Message>
+                </MessageBox>
+              </MessageContainer>
+            </Section>
+          );
+        })}
       </div>
     </Container>
   );
