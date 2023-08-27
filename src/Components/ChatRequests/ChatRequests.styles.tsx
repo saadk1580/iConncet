@@ -15,26 +15,38 @@ export const ListItem = styled.li({
   padding: "10px",
   border: "1px solid black",
   alignItems: "center",
+  justifyContent: 'space-between',
+  maxWidth: '350px'
 });
 
 export const Right = styled.div({
-  marginLeft: "15px",
+  display: 'flex',
+  alignItems: 'center',
+  '> p': {
+    marginLeft: '10px'
+  }
 });
 
 export const Img = styled.img({
-  width: "50px",
-  height: "50px",
+  width: "30px",
+  height: "30px",
   borderRadius: "50%",
 });
 
-export const Name = styled.p({
-  fontSize: "1.2rem",
-  margin: "0 0 5px 0",
-});
+
 
 export const ResponseBtns = styled.div({
   display: "flex",
   "> *": {
-    marginRight: "10px",
+    marginLeft: "10px",
   },
 });
+
+
+export const Button = styled.div(({ role }) => ({
+  backgroundColor: role === "accept" ? "white" : "darkGray",
+  width: "fit-content",
+  padding: "5px 8px",
+  borderRadius: "5px",
+  color: "black",
+}));

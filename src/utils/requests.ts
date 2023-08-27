@@ -1,4 +1,3 @@
-import { User } from "firebase/auth";
 import { db } from "../components/Auth/Auth";
 import { DocumentData, addDoc, arrayRemove, arrayUnion, collection, deleteField } from "firebase/firestore";
 import { doc, getDoc, getDocs, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";

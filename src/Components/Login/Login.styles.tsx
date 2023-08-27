@@ -24,6 +24,7 @@ export const LoginBtn = styled.button({
   justifyContent: "center",
   alignItems: "center",
   backgroundColor: "white",
+  cursor: 'pointer'
 });
 
 export const Heading = styled.h1({

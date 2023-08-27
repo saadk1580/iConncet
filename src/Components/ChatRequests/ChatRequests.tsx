@@ -4,15 +4,9 @@ import { respondChatRequest } from "../../utils/requests";
 import styled from "@emotion/styled";
 import { UserContext } from "../App/App";
 import { db } from "../Auth/Auth";
-import { Container, Img, List, ListItem, Name, ResponseBtns, Right } from "./ChatRequests.styles";
+import { Container, Img, List, ListItem, ResponseBtns, Right, Button } from "./ChatRequests.styles";
 
-const Button = styled.div(({ role }) => ({
-  backgroundColor: role === "accept" ? "lightBlue" : "darkGray",
-  width: "fit-content",
-  padding: "5px 8px",
-  borderRadius: "5px",
-  color: "black",
-}));
+
 
 export const ChatRequests = () => {
   const [requests, setRequests] = useState<DocumentData>();
@@ -41,8 +35,10 @@ export const ChatRequests = () => {
           reqs.map(([reqId, receiver]) => {
             return (
               <ListItem>
-                {/* <Img src={receiver.photoURL} /> */}
-                <Name>{receiver.displayName}</Name>
+                <Right>
+                  <Img src={receiver.photoURL} />
+                  <p>{receiver.displayName}</p>
+                </Right>
                 <ResponseBtns>
                   <Button role="accept" onClick={() => respondChatRequest(receiver, currentUser, reqId, true)}>
                     Accept
