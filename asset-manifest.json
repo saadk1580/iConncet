@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/iconnect/static/css/main.6a6206f7.css",
-    "main.js": "/iconnect/static/js/main.389bbda1.js",
-    "index.html": "/iconnect/index.html",
-    "main.6a6206f7.css.map": "/iconnect/static/css/main.6a6206f7.css.map",
-    "main.389bbda1.js.map": "/iconnect/static/js/main.389bbda1.js.map"
+    "main.css": "./static/css/main.6a6206f7.css",
+    "main.js": "./static/js/main.3f77a5d3.js",
+    "index.html": "./index.html",
+    "main.6a6206f7.css.map": "./static/css/main.6a6206f7.css.map",
+    "main.3f77a5d3.js.map": "./static/js/main.3f77a5d3.js.map"
   },
   "entrypoints": [
     "static/css/main.6a6206f7.css",
-    "static/js/main.389bbda1.js"
+    "static/js/main.3f77a5d3.js"
   ]
 }
