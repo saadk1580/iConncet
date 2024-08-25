@@ -1,11 +1,11 @@
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import './SignInWithGoogle.css';
 import { auth } from '../Auth/Auth';
 
 export const SignInWithGoogle = () => {
   const provider = new GoogleAuthProvider();
   return (
-    <button className="gsi-material-button" onClick={() => signInWithRedirect(auth, provider)}>
+    <button className="gsi-material-button" onClick={() => signInWithPopup(auth, provider)}>
       <div className="gsi-material-button-state"></div>
       <div className="gsi-material-button-content-wrapper">
         <div className="gsi-material-button-icon">

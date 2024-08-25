@@ -51,7 +51,7 @@ export default function Login() {
     };
 
     user && addUser();
-  }, [user]);
+  }, [user, displayName, email, emailVerified, navigate, phoneNumber, photoURL, uid]);
 
   return (
     <Main>
