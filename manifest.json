@@ -1,5 +1,7 @@
 {
-  "start_url": ".",
+  "short_name": "iConnect",
+  "name": "iConnect",
+  "start_url": "./login",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
