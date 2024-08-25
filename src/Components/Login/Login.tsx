@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import 'firebase/auth';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../Auth/Auth';
@@ -57,10 +57,10 @@ export default function Login() {
     <Main>
       <Container>
         {!loading ? (
-          <>
+          <Fragment>
             <Heading>Welcome</Heading>
             <SignInWithGoogle />
-          </>
+          </Fragment>
         ) : (
           <Spinner width={100} color="#ffffff" />
         )}

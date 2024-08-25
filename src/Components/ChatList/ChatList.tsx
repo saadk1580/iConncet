@@ -5,12 +5,6 @@ import { db } from "../Auth/Auth";
 import { useNavigate } from "react-router";
 import { Container, List, ListItems } from "./ChatList.styles";
 
-type Participants = {
-  displayName: string;
-  uid: string;
-  photoURL: string;
-};
-
 
 export const ChatList = () => {
   const navigate = useNavigate();
