@@ -58,5 +58,5 @@
     "@typescript-eslint/parser": "^6.0.0",
     "gh-pages": "^6.0.0"
   },
-  "homepage": "https://saadk1580.github.io/iconnect/"
+  "homepage": "."
 }
