@@ -18,19 +18,19 @@ export const Buttons = styled.div({
 });
 
 export const Container = styled.div({
-  width: '100%',
-  height: '100%',
   backgroundColor: 'rgba(0, 0, 0, 0.4)',
   position: 'absolute',
   zIndex: '10',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  right: 0,
+  left: 0,
+  height: '100%',
 });
 
 export const ConfirmWindow = styled.div({
-  width: '500px',
-  height: '200px',
+  // width: '100%',
   backgroundColor: '#ffffff',
   margin: '0 auto',
   position: 'relative',

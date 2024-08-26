@@ -39,7 +39,7 @@ export const ChatList = () => {
         {chatsArr ? (
           chatsArr.map(([chatId, chat]) => (
             <Chat key={chatId} onClick={() => navigate(`/chats/${chatId}`)}>
-              <PorfileImg src={chat.participants.photoURL} width={30} height={30} />
+              <PorfileImg src={chat.participants.photoURL} width={40} height={40} />
               <DisplayName>{chat.participants.displayName}</DisplayName>
             </Chat>
           ))

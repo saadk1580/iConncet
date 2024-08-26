@@ -10,6 +10,7 @@ export const Container = styled.div({
   overflowX: 'hidden',
   scrollBehavior: 'smooth',
   width: '100%',
+  flex: '1',
 });
 
 export const Section = styled.div({

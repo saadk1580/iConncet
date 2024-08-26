@@ -22,6 +22,7 @@ export const Chat = styled.div({
   alignItems: 'center',
   cursor: 'pointer',
   padding: '0.5em',
+  width: '100%',
   ':hover': {
     backgroundColor: '#333333',
   },
@@ -33,4 +34,5 @@ export const PorfileImg = styled.img({
 
 export const DisplayName = styled.p({
   marginLeft: '1em',
+  fontSize: '1.2rem',
 });
