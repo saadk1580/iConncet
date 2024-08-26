@@ -8,12 +8,13 @@ export const Title = styled.h1({
 export const Container = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
-  textAlign: 'center',
+  flex: '1',
 });
 
 export const Chats = styled.div({
+  display: 'flex',
   margin: '15px 0',
+  lineHeight: '1.5em',
 });
 
 export const Chat = styled.div({

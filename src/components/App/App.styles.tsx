@@ -30,12 +30,16 @@ export const MidContainer = styled.div({
 });
 
 export const LogoutButton = styled.button({
-  padding: '8px 0',
   fontSize: '1rem',
   margin: '5px 0',
+  cursor: 'pointer',
+  border: 'none',
+  backgroundColor: 'transparent',
+  color: '#ffffff',
 });
 
 export const DeleteButton = styled.button({
+  marginTop: '1em',
   padding: '8px 0',
   fontSize: '1rem',
 });

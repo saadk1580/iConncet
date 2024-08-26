@@ -14,6 +14,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../Auth/Auth';
 import { Confirm } from '../Confirm/Confirm';
 import { useParams } from 'react-router';
+import { NavigationBar } from '../NavBar/NavBar';
 
 export type Data = {
   users: DocumentData[];
@@ -24,15 +25,18 @@ export const UserContext = createContext<DocumentData>({});
 
 function App({ children }: PropsWithChildren) {
   const { userDetails } = useStateObserver();
-  const [hidden, setHiddem] = useState(false);
+
+  const { chatId } = useParams();
 
   if (userDetails === undefined) return <Spinner width={50} color="black" />;
 
   return (
     <UserContext.Provider value={userDetails}>
       <Container>
-        {hidden && <Confirm setHiddem={setHiddem} />}
-        <Content>{children}</Content>
+        <Content>
+          {children}
+          {!chatId && <NavigationBar />}
+        </Content>
       </Container>
     </UserContext.Provider>
   );

@@ -3,10 +3,9 @@ import { UserContext } from '../App/App';
 import { DocumentData, doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../Auth/Auth';
 import { useNavigate } from 'react-router';
-import { Container, Chats, Chat, PorfileImg, DisplayName, Title } from './ChatList.styles';
+import { Container, Chats, Chat, PorfileImg, DisplayName } from './ChatList.styles';
 import { Header } from '../Header/Header';
-import { Person2Outlined, PersonOffRounded, PersonOutlineRounded } from '@mui/icons-material';
-import { PersonOutline } from '@emotion-icons/evaicons-outline';
+import { PersonAddOutline } from '@emotion-icons/evaicons-outline';
 
 export const ChatList = () => {
   const navigate = useNavigate();
@@ -25,22 +24,28 @@ export const ChatList = () => {
     return () => unsub();
   }, []);
 
+  const chatsArr = chats && Object.entries(chats);
+
   return (
     <Container>
       <Header arrow={false}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', padding: '0 0.5em' }}>
           <h1>Chats</h1>
-          <PersonOutline size={30} style={{ cursor: 'pointer' }} />
+          <PersonAddOutline size={30} style={{ cursor: 'pointer' }} onClick={() => navigate('/chats/add')} />
         </div>
       </Header>
+
       <Chats>
-        {chats &&
-          Object.entries(chats).map(([chatId, chat]) => (
+        {chatsArr ? (
+          chatsArr.map(([chatId, chat]) => (
             <Chat key={chatId} onClick={() => navigate(`/chats/${chatId}`)}>
               <PorfileImg src={chat.participants.photoURL} width={30} height={30} />
               <DisplayName>{chat.participants.displayName}</DisplayName>
             </Chat>
-          ))}
+          ))
+        ) : (
+          <p style={{ padding: '0 0.5em' }}>You don't have any active chats. Add friends to start chatting.</p>
+        )}
       </Chats>
     </Container>
   );

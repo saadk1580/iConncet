@@ -47,7 +47,7 @@ export const ChatRequests = () => {
             );
           })
         ) : (
-          <p>No chat requests</p>
+          <p style={{ color: '#f0f0f0' }}>No chat requests</p>
         )}
       </List>
     </Container>

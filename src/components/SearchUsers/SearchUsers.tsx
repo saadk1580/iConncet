@@ -8,6 +8,7 @@ import { db } from '../Auth/Auth';
 import useUserChats from '../../hooks/useUserChats';
 import { ChatRequests } from '../ChatRequests/ChatRequests';
 import { Header } from '../Header/Header';
+import { PorfileImg } from '../ChatList/ChatList.styles';
 
 const AddButton = styled.button({
   padding: '5px 10px',
@@ -51,7 +52,10 @@ export const SearchUsers = () => {
 
           return (
             <ListItem>
-              {user.displayName}
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <PorfileImg src={user.photoURL} width={30} height={30} style={{ marginRight: '1em' }} />
+                {user.displayName}
+              </div>
               <AddButton onClick={async () => await sendChatRequest(user, currentUser)}>Add</AddButton>
             </ListItem>
           );

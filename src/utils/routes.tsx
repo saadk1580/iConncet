@@ -8,6 +8,8 @@ import Chat from '../components/Chat/Chat';
 import { ChatHeader } from '../components/ChatHeader/ChatHeader';
 import { ChatInput } from '../components/ChatInput/ChatInput';
 import { SearchUsers } from '../components/SearchUsers/SearchUsers';
+import { ProfileImg } from '../components/Chat/Chat.styles';
+import { ProfileInfo } from '../components/ProfileInfo/ProfileInfo';
 
 export function AppRoutes() {
   return (
@@ -42,6 +44,16 @@ export function AppRoutes() {
           <PrivateRoute>
             <App>
               <SearchUsers />
+            </App>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <App>
+              <ProfileInfo />
             </App>
           </PrivateRoute>
         }
