@@ -1,7 +1,13 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "../components/Login/Login";
-import App from "../components/App/App";
-import { PrivateRoute } from "../components/PrivateRoute/PrivateRoute";
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Login from '../components/Login/Login';
+import App from '../components/App/App';
+import { PrivateRoute } from '../components/PrivateRoute/PrivateRoute';
+import { Chats } from '../components/ChatList/ChatList.styles';
+import { ChatList } from '../components/ChatList/ChatList';
+import Chat from '../components/Chat/Chat';
+import { ChatHeader } from '../components/ChatHeader/ChatHeader';
+import { ChatInput } from '../components/ChatInput/ChatInput';
+import { SearchUsers } from '../components/SearchUsers/SearchUsers';
 
 export function AppRoutes() {
   return (
@@ -12,7 +18,9 @@ export function AppRoutes() {
         path="/chats"
         element={
           <PrivateRoute>
-            <App />
+            <App>
+              <ChatList />
+            </App>
           </PrivateRoute>
         }
       />
@@ -20,7 +28,21 @@ export function AppRoutes() {
         path="/chats/:chatId"
         element={
           <PrivateRoute>
-            <App />
+            <App>
+              <ChatHeader />
+              <Chat />
+              <ChatInput />
+            </App>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/chats/add"
+        element={
+          <PrivateRoute>
+            <App>
+              <SearchUsers />
+            </App>
           </PrivateRoute>
         }
       />
