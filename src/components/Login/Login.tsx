@@ -12,7 +12,7 @@ import { SignInWithGoogle } from '../SignInWithGoogle/SIgnInWithGoogle';
 
 const Main = styled.div({
 	width: '100vw',
-	height: '100vh',
+	height: '100dvh',
 });
 
 export default function Login() {

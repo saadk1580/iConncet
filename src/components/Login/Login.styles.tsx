@@ -2,8 +2,10 @@ import styled from '@emotion/styled';
 
 export const MiddleContainer = styled.div({
 	backgroundColor: '#ffffff',
-	minHeight: '700px',
-	minWidth: '340px',
+	height: '95dvh',
+	width: '340px',
+	maxHeight: '700px',
+	maxWidth: '340px',
 	borderRadius: '1em',
 	color: '#000000',
 });
