@@ -1,53 +1,38 @@
-import "../Auth/Auth";
-import Chat from "../Chat/Chat";
-import { ChatInput } from "../ChatInput/ChatInput";
-import { SearchUsers } from "../SearchUsers/SearchUsers";
-import { createContext, useState } from "react";
-import { DocumentData } from "firebase/firestore";
-import { useStateObserver } from "../../hooks/useStateOberser";
-import { ChatList } from "../ChatList/ChatList";
-import { ChatHeader } from "../ChatHeader/ChatHeader";
-import { ChatRequests } from "../ChatRequests/ChatRequests";
-import { LeftContainer, MidContainer, Container, LogoutButton, DeleteButton } from "./App.styles";
-import { Spinner } from "../Icons/Spinner";
-import { signOut } from "firebase/auth";
-import { auth } from "../Auth/Auth";
-import { Confirm } from "../Confirm/Confirm";
+import '../Auth/Auth';
+import { PropsWithChildren, createContext } from 'react';
+import { DocumentData } from 'firebase/firestore';
+import { useStateObserver } from '../../hooks/useStateOberser';
+
+import { Content, MidContainer, Container, LogoutButton, DeleteButton } from './App.styles';
+import { Spinner } from '../Icons/Spinner';
+
+import { useParams } from 'react-router';
+import { NavigationBar } from '../NavBar/NavBar';
 
 export type Data = {
-  users: DocumentData[];
-  chats: DocumentData[];
+	users: DocumentData[];
+	chats: DocumentData[];
 };
 
 export const UserContext = createContext<DocumentData>({});
 
+function App({ children }: PropsWithChildren) {
+	const { userDetails } = useStateObserver();
 
-function App() {
-  const { userDetails } = useStateObserver();
-  const [hidden, setHiddem] = useState(false)
+	const { chatId } = useParams();
 
-  if (userDetails === undefined) return <Spinner width={50} color="black" />;
+	if (userDetails === undefined) return <Spinner width={50} color="black" />;
 
-
-  return (
-    <UserContext.Provider value={userDetails}>
-      <Container>
-        {hidden && <Confirm setHiddem={setHiddem}/>}
-        <LeftContainer>
-          <ChatRequests />
-          <ChatList />
-          <LogoutButton onClick={() => signOut(auth)}>Log out</LogoutButton>
-          <DeleteButton onClick={() => setHiddem(true)}>Delete Account</DeleteButton>
-        </LeftContainer>
-        <MidContainer>
-          <ChatHeader />
-          <Chat />
-          <ChatInput />
-        </MidContainer>
-        <SearchUsers />
-      </Container>
-    </UserContext.Provider>
-  );
+	return (
+		<UserContext.Provider value={userDetails}>
+			<Container>
+				<Content>
+					{children}
+					{!chatId && <NavigationBar />}
+				</Content>
+			</Container>
+		</UserContext.Provider>
+	);
 }
 
 export default App;

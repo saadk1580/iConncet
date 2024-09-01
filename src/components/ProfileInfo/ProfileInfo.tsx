@@ -1,45 +1,32 @@
-import { useContext, useState } from "react";
-import { Container } from "./ProfileInfo.Styles";
-import { UserContext } from "../App/App";
+import { useContext, useState } from 'react';
+import { Container, ProfileImg } from './ProfileInfo.Styles';
+import { UserContext } from '../App/App';
+import { Header } from '../Header/Header';
+import { DeleteButton } from '../App/App.styles';
+import { Confirm } from '../Confirm/Confirm';
 
 export const ProfileInfo = () => {
-  const [status, setStatus] = useState("Active");
+  const [status, setStatus] = useState('Active');
+
+  const [hidden, setHiddem] = useState(false);
 
   const user = useContext(UserContext);
 
-  const { displayName, photoURL } = user ?? {};
+  const { displayName, photoURL, email } = user ?? {};
 
   return (
-    <Container className="user-status">
-      {photoURL && <img width={50} src={photoURL} className="user-status-img" />}
-      <div>
-        <p style={{ fontSize: "1.1rem" }}>{displayName}</p>
-        <p
-          style={{
-            display: "flex",
-            fontSize: "0.7rem",
-            alignItems: "center",
-            color: "#6b6b6b",
-          }}
-        >
-          <div className={`status-${status}`}></div> {status}
-        </p>
-      </div>
+    <>
+      {hidden && <Confirm setHiddem={setHiddem} />}
 
-      <div className="dropdown-btn">
-        <p>...</p>
-        <ul className="dropdown-chat">
-          <li onClick={() => setStatus("Active")} style={{ borderBottom: "1px solid #333" }} className="dropdown-item-chat">
-            Active
-          </li>
-          <li onClick={() => setStatus("Away")} style={{ borderBottom: "1px solid #333" }} className="dropdown-item-chat">
-            Away
-          </li>
-          <li onClick={() => setStatus("Offline")} className="dropdown-item-chat">
-            Offline
-          </li>
-        </ul>
-      </div>
-    </Container>
+      <Container className="user-status">
+        <Header>
+          <h1>Profile</h1>
+        </Header>
+        {photoURL && <ProfileImg width={50} src={photoURL} className="user-status-img" />}
+        <h2>{displayName}</h2>
+        <p>Email: {email}</p>
+        <DeleteButton onClick={() => setHiddem(true)}>Delete Account</DeleteButton>
+      </Container>
+    </>
   );
 };

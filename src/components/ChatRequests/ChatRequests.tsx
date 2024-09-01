@@ -1,12 +1,10 @@
-import { DocumentData, doc, onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { respondChatRequest } from "../../utils/requests";
-import styled from "@emotion/styled";
-import { UserContext } from "../App/App";
-import { db } from "../Auth/Auth";
-import { Container, Img, List, ListItem, ResponseBtns, Right, Button } from "./ChatRequests.styles";
-
-
+import { DocumentData, doc, onSnapshot } from 'firebase/firestore';
+import { useContext, useEffect, useState } from 'react';
+import { respondChatRequest } from '../../utils/requests';
+import styled from '@emotion/styled';
+import { UserContext } from '../App/App';
+import { db } from '../Auth/Auth';
+import { Container, Img, List, ListItem, ResponseBtns, Right, Button } from './ChatRequests.styles';
 
 export const ChatRequests = () => {
   const [requests, setRequests] = useState<DocumentData>();
@@ -16,7 +14,7 @@ export const ChatRequests = () => {
   const { uid } = currentUser;
 
   useEffect(() => {
-    const docRef = doc(db, "users", uid);
+    const docRef = doc(db, 'users', uid);
     const unsub = onSnapshot(docRef, (snapshot) => {
       const data = snapshot.data()?.chatRequestsRecieved;
       setRequests(data);
@@ -29,7 +27,7 @@ export const ChatRequests = () => {
 
   return (
     <Container>
-      <h1>REQUESTS</h1>
+      <h2>Friend Requests</h2>
       <List>
         {reqs.length ? (
           reqs.map(([reqId, receiver]) => {
@@ -49,7 +47,7 @@ export const ChatRequests = () => {
             );
           })
         ) : (
-          <p>No chat requests</p>
+          <p style={{ color: '#f0f0f0' }}>No chat requests</p>
         )}
       </List>
     </Container>

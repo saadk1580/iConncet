@@ -1,21 +1,16 @@
-import { FC, useContext } from "react";
-import { Button, Buttons, ConfirmWindow, Container, Heading, List, ListItem } from "./Confirm.styles";
-import { UserContext } from "../App/App";
-import { doc, deleteDoc } from "firebase/firestore";
-import { auth, db } from "../Auth/Auth";
-import { signOut } from "firebase/auth";
+import { FC, useContext } from 'react';
+import { Button, Buttons, ConfirmWindow, Container, Heading, List, ListItem } from './Confirm.styles';
+import { UserContext } from '../App/App';
+import { doc, deleteDoc } from 'firebase/firestore';
+import { auth, db } from '../Auth/Auth';
+import { signOut } from 'firebase/auth';
 
-
-
-export const Confirm: FC<{setHiddem:  React.Dispatch<React.SetStateAction<boolean>>}> = ({setHiddem}) => {
-
-  const user = useContext(UserContext)
+export const Confirm: FC<{ setHiddem: React.Dispatch<React.SetStateAction<boolean>> }> = ({ setHiddem }) => {
+  const user = useContext(UserContext);
   const handleDeleteAccount = async () => {
-    console.log(user.uid)
-    await deleteDoc(doc(db, 'users', user.uid))
-    signOut(auth)
-  }
-
+    await deleteDoc(doc(db, 'users', user.uid));
+    signOut(auth);
+  };
 
   return (
     <Container>
@@ -30,7 +25,9 @@ export const Confirm: FC<{setHiddem:  React.Dispatch<React.SetStateAction<boolea
           <Button onClick={handleDeleteAccount} bg="#f04e64" color="white">
             Yes, delete
           </Button>
-          <Button bg="white" onClick={() => setHiddem(false)}>Cancel and keep chatting</Button>
+          <Button bg="white" onClick={() => setHiddem(false)}>
+            Cancel and keep chatting
+          </Button>
         </Buttons>
       </ConfirmWindow>
     </Container>
